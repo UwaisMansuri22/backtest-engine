@@ -30,15 +30,15 @@ def _fetch_single(ticker: str, start: str, end: str) -> pd.Series:
         end=end,
         auto_adjust=True,
         progress=False,
-        # Suppress the multi-ticker grouping yfinance added in 0.2.x
-        group_by="ticker",
     )
     if raw.empty:
         return pd.Series(dtype=float, name=ticker)
 
     close = raw["Close"]
-    # yfinance >=0.2 may return a single-column DataFrame instead of a Series
-    # when group_by="ticker" is set.
+    # yfinance ≥ 0.2.37 returns MultiIndex columns even for a single ticker:
+    #   raw.columns = MultiIndex([('Close', 'SPY'), ...], names=['Price', 'Ticker'])
+    # raw["Close"] therefore gives a single-column DataFrame, not a Series.
+    # Older yfinance returns a flat Series directly.  Handle both forms here.
     if isinstance(close, pd.DataFrame):
         close = close.iloc[:, 0]
     return close.rename(ticker)
