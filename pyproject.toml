@@ -7,6 +7,7 @@ dependencies = [
     "pandas>=2.2",
     "numpy>=1.26",
     "yfinance>=0.2",
+    "pyarrow>=16.0",
     "matplotlib>=3.8",
     "vectorbt>=0.26",
 ]
