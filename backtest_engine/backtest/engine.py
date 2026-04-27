@@ -113,17 +113,21 @@ def run_backtest(
         One-way slippage cost in basis points.
     sizing_method:
         ``"equal_weight"`` (default) — each active signal gets 1/N of capital.
-        ``"vol_target"``  — inverse-vol sizing so each position contributes
-        equal risk; see ``position_sizing.vol_target_weights``.
+        ``"vol_target"``  — inverse-vol sizing scaled to a target portfolio vol;
+        see ``position_sizing.vol_target_weights``.
+        ``"risk_parity"`` — normalised inverse-vol sizing; each active asset
+        contributes equal risk; fully invested (gross = 1) on every row;
+        see ``multi_asset.risk_parity_weights``.
     target_vol_annual:
         Target annualised vol per active position, used only when
         ``sizing_method="vol_target"`` (default 0.15 = 15 %).
     vol_lookback_days:
         Rolling window for realised-vol estimation when
-        ``sizing_method="vol_target"`` (default 60 trading days).
+        ``sizing_method="vol_target"`` or ``"risk_parity"``
+        (default 60 trading days).
     max_leverage:
         Maximum total gross exposure when ``sizing_method="vol_target"``
-        (default 1.0 = no leverage).
+        (default 1.0 = no leverage; not used for ``"risk_parity"``).
 
     Returns
     -------
@@ -167,9 +171,21 @@ def run_backtest(
             max_leverage=max_leverage,
         )
         weights = raw.shift(1).fillna(0.0)
+    elif sizing_method == "risk_parity":
+        # Normalised inverse-vol: each active position contributes equal risk.
+        # Fully invested (gross = 1) on every active row; no leverage parameter.
+        from backtest_engine.strategies.multi_asset import risk_parity_weights
+
+        raw = risk_parity_weights(
+            signals,
+            prices.pct_change(),
+            lookback_days=vol_lookback_days,
+        )
+        weights = raw.shift(1).fillna(0.0)
     else:
         raise ValueError(
-            f"sizing_method must be 'equal_weight' or 'vol_target', got '{sizing_method}'"
+            "sizing_method must be 'equal_weight', 'vol_target', or 'risk_parity',"
+            f" got '{sizing_method}'"
         )
 
     # ------------------------------------------------------------------
