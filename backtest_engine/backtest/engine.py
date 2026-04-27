@@ -90,6 +90,10 @@ def run_backtest(
     initial_capital: float = 10_000.0,
     transaction_cost_bps: float = 5.0,
     slippage_bps: float = 2.0,
+    sizing_method: str = "equal_weight",
+    target_vol_annual: float = 0.15,
+    vol_lookback_days: int = 60,
+    max_leverage: float = 1.0,
 ) -> BacktestResult:
     """Run a vectorized daily-bar backtest.
 
@@ -107,12 +111,30 @@ def run_backtest(
         One-way brokerage cost in basis points (1 bp = 0.01 %).
     slippage_bps:
         One-way slippage cost in basis points.
+    sizing_method:
+        ``"equal_weight"`` (default) — each active signal gets 1/N of capital.
+        ``"vol_target"``  — inverse-vol sizing so each position contributes
+        equal risk; see ``position_sizing.vol_target_weights``.
+    target_vol_annual:
+        Target annualised vol per active position, used only when
+        ``sizing_method="vol_target"`` (default 0.15 = 15 %).
+    vol_lookback_days:
+        Rolling window for realised-vol estimation when
+        ``sizing_method="vol_target"`` (default 60 trading days).
+    max_leverage:
+        Maximum total gross exposure when ``sizing_method="vol_target"``
+        (default 1.0 = no leverage).
 
     Returns
     -------
     BacktestResult
         Equity curve, returns, positions, trade log, and an empty ``stats``
         dict ready for the metrics module to populate.
+
+    Raises
+    ------
+    ValueError
+        If ``sizing_method`` is not recognised.
     """
     if prices.shape != signals.shape:
         raise ValueError(
@@ -124,22 +146,31 @@ def run_backtest(
     total_bps = transaction_cost_bps + slippage_bps
 
     # ------------------------------------------------------------------
-    # 1. LOOKAHEAD-BIAS PREVENTION
-    # A signal computed on day T is based on prices known at EOD T.
-    # It can only be executed at the earliest at the open of day T+1.
-    # shift(1) enforces this one-bar delay: the strategy never "buys
-    # at yesterday's close using today's information."
-    # fillna(0) means we start the period in cash with no open position.
+    # 1 & 2. SIGNAL → WEIGHTS  (with lookahead-bias prevention)
+    # Both paths apply shift(1) so a signal/vol estimate computed from
+    # prices through day T is only executed at the open of day T+1.
     # ------------------------------------------------------------------
-    executed = signals.shift(1).fillna(0.0)
+    if sizing_method == "equal_weight":
+        # Each active signal receives 1/N of capital (N active that day).
+        executed = signals.shift(1).fillna(0.0)
+        weights = _equal_weight(executed)
+    elif sizing_method == "vol_target":
+        # Inverse-vol sizing: each active position targets equal risk.
+        # vol_target_weights returns unshifted weights; shift applied here.
+        from backtest_engine.backtest.position_sizing import vol_target_weights
 
-    # ------------------------------------------------------------------
-    # 2. EQUAL-WEIGHT NORMALIZATION
-    # Each active signal receives 1/N of capital (N active on that day).
-    # Without this, adding more tickers to a signal silently levers up
-    # the portfolio (e.g. 5 signals of weight 1 each = 5× leverage).
-    # ------------------------------------------------------------------
-    weights = _equal_weight(executed)
+        raw = vol_target_weights(
+            signals,
+            prices,
+            target_vol_annual=target_vol_annual,
+            vol_lookback_days=vol_lookback_days,
+            max_leverage=max_leverage,
+        )
+        weights = raw.shift(1).fillna(0.0)
+    else:
+        raise ValueError(
+            f"sizing_method must be 'equal_weight' or 'vol_target', got '{sizing_method}'"
+        )
 
     # ------------------------------------------------------------------
     # 3. PER-ASSET LOG RETURNS
