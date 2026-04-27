@@ -50,7 +50,8 @@ def _build_trade_log(
     delta = weights - prev_w
 
     # Stack to long (date, ticker) Series; discard unchanged positions.
-    delta_long = delta.stack()
+    # stack() return type is DataFrame | Series in stubs; we know it's Series here.
+    delta_long: pd.Series = delta.stack()  # type: ignore[assignment]
     delta_long = delta_long[delta_long.abs() > 1e-9].rename("weight_change")
 
     if delta_long.empty:
@@ -148,7 +149,7 @@ def run_backtest(
     # Day 0 is NaN (no prior bar).  With weights = 0 on day 0 the product
     # 0 × NaN = NaN collapses to 0 under sum(skipna=True).
     # ------------------------------------------------------------------
-    log_rets: pd.DataFrame = np.log(prices / prices.shift(1))
+    log_rets: pd.DataFrame = np.log(prices / prices.shift(1))  # type: ignore[assignment]
 
     # ------------------------------------------------------------------
     # 4. GROSS PORTFOLIO LOG RETURN

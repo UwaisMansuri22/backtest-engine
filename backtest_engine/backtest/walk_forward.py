@@ -5,8 +5,9 @@ from __future__ import annotations
 import itertools
 import logging
 import math
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any
 
 import pandas as pd
 
@@ -73,7 +74,7 @@ def _safe_eval(
 def walk_forward_test(
     prices: pd.DataFrame,
     strategy_fn: Callable[..., pd.DataFrame],
-    param_grid: dict[str, list],
+    param_grid: dict[str, list[Any]],
     train_years: int = 3,
     test_years: int = 1,
     metric: str = "sharpe_ratio",
@@ -148,7 +149,7 @@ def walk_forward_test(
 
     param_names = list(param_grid.keys())
     param_combos: list[dict[str, Any]] = [
-        dict(zip(param_names, combo))
+        dict(zip(param_names, combo, strict=True))
         for combo in itertools.product(*param_grid.values())
     ]
     n_combos = len(param_combos)

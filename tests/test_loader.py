@@ -9,7 +9,6 @@ import pytest
 import backtest_engine.data.loader as loader_module
 from backtest_engine.data.loader import load_prices
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------

@@ -12,8 +12,8 @@ import pytest
 
 from backtest_engine.metrics.performance import (
     annual_volatility,
-    calmar_ratio,
     cagr,
+    calmar_ratio,
     compare_strategies,
     max_drawdown,
     performance_report,
@@ -23,7 +23,6 @@ from backtest_engine.metrics.performance import (
     total_return,
     win_rate,
 )
-
 
 # ---------------------------------------------------------------------------
 # total_return

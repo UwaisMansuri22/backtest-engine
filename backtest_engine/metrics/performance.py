@@ -26,7 +26,7 @@ def total_return(returns: pd.Series) -> float:
     Good values: positive; context-dependent on the length of the period.
     """
     _validate(returns)
-    return float((1.0 + returns).prod() - 1.0)
+    return float((1.0 + returns).prod() - 1.0)  # type: ignore[operator, arg-type]
 
 
 def cagr(returns: pd.Series) -> float:
@@ -38,7 +38,7 @@ def cagr(returns: pd.Series) -> float:
     """
     _validate(returns)
     n = len(returns)
-    total = float((1.0 + returns).prod())
+    total = float((1.0 + returns).prod())  # type: ignore[arg-type]
     return float(total ** (_TRADING_DAYS / n) - 1.0)
 
 

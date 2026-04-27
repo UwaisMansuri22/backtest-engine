@@ -1,0 +1,9 @@
+line-length = 100
+target-version = "py311"
+
+[lint]
+select = ["E", "F", "I", "N", "UP", "B"]
+
+[lint.per-file-ignores]
+# Notebooks: cell-order imports after sys.path setup and single-line imports are expected
+"notebooks/*.ipynb" = ["E401", "E402", "E501", "I001", "F401", "B905"]
