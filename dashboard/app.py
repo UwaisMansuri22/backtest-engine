@@ -124,16 +124,29 @@ if page == "📊 Live Account":
     data, logs = account_data(), live_logs()
 
     if data is None:
-        st.warning("Alpaca keys not set — reading from live logs only.")
+        st.error("Alpaca API keys not configured.")
+        st.markdown("""
+**To connect your paper-trading account:**
+
+1. Get free paper-trading keys at [alpaca.markets](https://alpaca.markets)
+   *(Dashboard → Paper Trading → API Keys)*
+2. **Streamlit Cloud:** go to **Settings → Secrets** and add:
+   ```toml
+   ALPACA_API_KEY = "your_paper_api_key_here"
+   ALPACA_SECRET_KEY = "your_paper_secret_key_here"
+   ```
+3. **Locally:** copy `.env.example` → `.env` and fill in your keys, then
+   restart: `streamlit run dashboard/app.py`
+""")
         if logs:
+            st.divider()
+            st.subheader("Last log entry (no-key dry-run data)")
             last = logs[-1]
             c1, c2, c3 = st.columns(3)
             c1.metric("Equity (last log)", f"${last.get('account_equity', 0):,.0f}")
             c2.metric("Status", last.get("status", "—").upper())
             c3.metric("Regime", "RISK-ON" if last.get("regime_risk_on") else "RISK-OFF")
             with st.expander("Full log entry"): st.json(last)
-        else:
-            st.info("No logs yet — run `python scripts/run_live.py --dry-run` first.")
         st.stop()
 
     eq, last_eq = data["equity"], data["last_equity"]
