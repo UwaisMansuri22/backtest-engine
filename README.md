@@ -110,6 +110,33 @@ uv pip install -e ".[dev]"
 pip install -e ".[dev]"
 ```
 
+## Dashboard
+
+Monitor the live bot from any device with the Streamlit dashboard.
+
+### Run locally
+
+```bash
+streamlit run dashboard/app.py
+# or with uv:
+uv run streamlit run dashboard/app.py
+```
+
+Opens at `http://localhost:8501`. Live data auto-refreshes every 60 s during market hours.
+Without Alpaca keys it falls back to reading the `results/live_log_*.json` files.
+
+### Deploy free on Streamlit Cloud
+
+1. Push this repo to GitHub.
+2. Go to [share.streamlit.io](https://share.streamlit.io) → **New app** → connect your repo.
+3. Set **Main file path** to `dashboard/app.py`.
+4. Add your Alpaca secrets under **Settings → Secrets**:
+   ```toml
+   ALPACA_API_KEY = "your_paper_api_key_here"
+   ALPACA_SECRET_KEY = "your_paper_secret_key_here"
+   ```
+5. Click **Deploy** — your dashboard is live at `https://<your-app>.streamlit.app`.
+
 ## Development
 
 ```bash
