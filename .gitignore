@@ -42,6 +42,8 @@ htmlcov/
 .env
 .env.*
 
-# Project-specific: never commit cached data or results
+# Project-specific: never commit cached data, backtest artefacts, or local cron logs
 data_cache/
 results/
+!results/live_log_*.json
+logs/

@@ -110,6 +110,29 @@ uv pip install -e ".[dev]"
 pip install -e ".[dev]"
 ```
 
+## Deployment
+
+The bot runs automatically via GitHub Actions every weekday at 9:45 AM ET.
+
+### Add GitHub secrets
+
+Go to **Settings → Secrets and variables → Actions → New repository secret** and add:
+
+| Name | Value |
+|---|---|
+| `ALPACA_API_KEY` | Your Alpaca paper-trading key |
+| `ALPACA_SECRET_KEY` | Your Alpaca paper-trading secret |
+
+### Trigger manually
+
+1. Go to the **Actions** tab in your GitHub repo.
+2. Click **Daily Trading Bot** in the left sidebar.
+3. Click **Run workflow** → **Run workflow** (green button).
+
+### Read the run logs
+
+Each run appears in the Actions tab. Click a run → click the **run-bot** job → expand any step to see full output. The **Run trading bot** step shows the safety check results and order details. If the run succeeded, the **Commit log file** step will have committed `results/live_log_YYYY-MM-DD.json` to the repo.
+
 ## Dashboard
 
 Monitor the live bot from any device with the Streamlit dashboard.
