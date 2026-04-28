@@ -124,14 +124,14 @@ class TestCheckPositionConcentration:
         assert r.passed
 
     def test_exactly_at_limit_passes(self) -> None:
-        w = {"XLK": 0.40, "XLE": 0.30, "GLD": 0.30}
-        r = check_position_concentration(w, max_weight=0.40)
+        w = {"XLK": 0.50, "XLE": 0.30, "GLD": 0.20}
+        r = check_position_concentration(w, max_weight=0.50)
         assert r.passed
 
     def test_negative_weights_checked_by_abs(self) -> None:
-        # Short position of -0.45 should fail the 40 % limit
-        w = {"XLK": -0.45, "XLE": 0.30}
-        r = check_position_concentration(w, max_weight=0.40)
+        # Short position of -0.55 should fail the 50 % limit
+        w = {"XLK": -0.55, "XLE": 0.30}
+        r = check_position_concentration(w, max_weight=0.50)
         assert not r.passed
 
     def test_result_name(self) -> None:

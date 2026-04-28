@@ -87,14 +87,13 @@ def check_order_notional(
 
 def check_position_concentration(
     target_weights: dict[str, float],
-    max_weight: float = 0.40,
+    # 50% limit chosen because risk-parity across 3 assets can legitimately
+    # concentrate up to ~45% in the lowest-vol asset. 40% was too tight
+    # for a 3-asset portfolio. If universe expands beyond 5 assets,
+    # revisit and lower back to 35-40%.
+    max_weight: float = 0.50,
 ) -> CheckResult:
-    """No single target position may exceed ``max_weight`` of equity.
-
-    A 3-asset risk-parity portfolio with equal vols gives ≈ 33 % each.
-    The 40 % cap catches the case where one position dominates due to a
-    low-vol outlier inflating its inverse-vol weight.
-    """
+    """No single target position may exceed ``max_weight`` of equity."""
     if not target_weights:
         return CheckResult(
             name="concentration",
