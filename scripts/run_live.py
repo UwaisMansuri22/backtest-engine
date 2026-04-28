@@ -9,11 +9,11 @@ Usage
     # Live paper-trading run (requires ALPACA_API_KEY + ALPACA_SECRET_KEY):
     uv run python scripts/run_live.py
 
-    # Or with a .env file in the repo root:
-    uv run python scripts/run_live.py --dry-run   # dotenv loaded automatically
+    # Manual run (adds clear header in GitHub Actions logs):
+    uv run python scripts/run_live.py --manual
 
-Typical cron schedule (weekdays at 15:45 ET, 15 min before close):
-    45 19 * * 1-5  cd /path/to/backtest-engine && uv run python scripts/run_live.py
+Typical cron schedule (weekdays at 9:45 ET via GitHub Actions):
+    45 13 * * 1-5  (see .github/workflows/daily_bot.yml)
 """
 
 from __future__ import annotations
@@ -43,14 +43,26 @@ logging.basicConfig(
 logger = logging.getLogger("run_live")
 
 
+def _health_check() -> None:
+    """Print account balance as the very first line — confirms Alpaca connection."""
+    try:
+        from backtest_engine.live.alpaca_client import AlpacaClient
+        account = AlpacaClient().get_account()
+        print(f"Bot starting. Alpaca paper account: ${float(account.portfolio_value):,.2f}",
+              flush=True)
+    except Exception as exc:
+        print(f"Bot starting. Alpaca connection failed: {exc}", flush=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Daily multi-asset risk-parity paper-trading runner.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Examples:\n"
-            "  python scripts/run_live.py --dry-run   # test without Alpaca keys\n"
-            "  python scripts/run_live.py             # live paper-trading run\n"
+            "  python scripts/run_live.py --dry-run          # test without keys\n"
+            "  python scripts/run_live.py                    # live paper-trading\n"
+            "  python scripts/run_live.py --manual           # manual trigger\n"
         ),
     )
     parser.add_argument(
@@ -61,9 +73,21 @@ def main() -> int:
             "Works without Alpaca keys (uses yfinance + $100k dummy account)."
         ),
     )
+    parser.add_argument(
+        "--manual",
+        action="store_true",
+        help="Flag this as a manual run — prints a distinct header in logs.",
+    )
     args = parser.parse_args()
 
-    if args.dry_run:
+    _health_check()
+
+    if args.manual:
+        from datetime import datetime
+        logger.info("=" * 60)
+        logger.info("=== MANUAL RUN — %s ===", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        logger.info("=" * 60)
+    elif args.dry_run:
         logger.info("=" * 60)
         logger.info("DRY RUN MODE — no orders will be submitted")
         logger.info("=" * 60)
