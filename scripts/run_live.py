@@ -48,8 +48,8 @@ def _health_check() -> None:
     try:
         from backtest_engine.live.alpaca_client import AlpacaClient
         account = AlpacaClient().get_account()
-        print(f"Bot starting. Alpaca paper account: ${float(account.portfolio_value):,.2f}",
-              flush=True)
+        value = float(account.portfolio_value or 0)
+        print(f"Bot starting. Alpaca paper account: ${value:,.2f}", flush=True)
     except Exception as exc:
         print(f"Bot starting. Alpaca connection failed: {exc}", flush=True)
 

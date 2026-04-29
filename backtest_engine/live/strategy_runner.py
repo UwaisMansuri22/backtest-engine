@@ -181,7 +181,9 @@ def run_daily_strategy(dry_run: bool = False) -> dict[str, Any]:
 
         log["account_equity"] = round(equity, 2)
         log["current_weights"] = {k: round(v, 4) for k, v in current_weights.items()}
-        logger.info("Account equity: $%s  |  Open positions: %d", f"{equity:,.2f}", len(current_weights))
+        logger.info(
+            "Account equity: $%s  |  Open positions: %d", f"{equity:,.2f}", len(current_weights)
+        )
 
         # ── 7. Build order list ─────────────────────────────────────────────
         orders: list[dict[str, Any]] = []

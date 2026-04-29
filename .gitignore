@@ -44,6 +44,6 @@ htmlcov/
 
 # Project-specific: never commit cached data, backtest artefacts, or local cron logs
 data_cache/
-results/
+results/*
 !results/live_log_*.json
 logs/
