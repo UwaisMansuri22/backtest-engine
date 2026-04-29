@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-04-29T14:04:10.073227+00:00",
+  "timestamp": "2026-04-29T15:35:03.253067+00:00",
   "dry_run": false,
-  "status": "executed",
+  "status": "aborted",
   "price_rows": 420,
   "price_cols": [
     "XLK",
@@ -26,40 +26,40 @@
     "GLD"
   ],
   "target_weights": {
-    "XLK": 0.3223,
-    "XLI": 0.4274,
-    "GLD": 0.2503
+    "XLK": 0.3227,
+    "XLI": 0.426,
+    "GLD": 0.2513
   },
-  "account_equity": 100042.54,
+  "account_equity": 99979.13,
   "current_weights": {
-    "GLD": 0.2441,
-    "XLI": 0.4297,
-    "XLK": 0.3266
+    "GLD": 0.2517,
+    "XLI": 0.4246,
+    "XLK": 0.3238
   },
   "orders": [
     {
       "symbol": "XLK",
       "side": "sell",
-      "qty": 2.696272,
-      "notional": 426.58,
-      "delta_weight": -0.0043,
-      "price": 158.21
+      "qty": 0.6684,
+      "notional": 106.08,
+      "delta_weight": -0.0011,
+      "price": 158.71
     },
     {
       "symbol": "XLI",
-      "side": "sell",
-      "qty": 1.348179,
-      "notional": 230.19,
-      "delta_weight": -0.0023,
-      "price": 170.74
+      "side": "buy",
+      "qty": 0.832221,
+      "notional": 140.98,
+      "delta_weight": 0.0014,
+      "price": 169.4
     },
     {
       "symbol": "GLD",
-      "side": "buy",
-      "qty": 1.498349,
-      "notional": 622.29,
-      "delta_weight": 0.0062,
-      "price": 415.32
+      "side": "sell",
+      "qty": 0.084421,
+      "notional": 35.2,
+      "delta_weight": -0.0004,
+      "price": 417.01
     }
   ],
   "safety_checks": {
@@ -67,20 +67,9 @@
     "order_notional": "PASS",
     "concentration": "PASS",
     "market_open": "PASS",
-    "last_run": "PASS"
+    "last_run": "FAIL: Last run was 1.5h ago (minimum 20h required to prevent double-runs)"
   },
-  "submitted_orders": [
-    {
-      "symbol": "XLK",
-      "order_id": "c84fec82-5c17-426f-854c-f01f23ed0c78"
-    },
-    {
-      "symbol": "XLI",
-      "order_id": "1bc63e05-0b4f-475d-b5f9-f3824db0495a"
-    },
-    {
-      "symbol": "GLD",
-      "order_id": "4c10a243-53c3-4f4d-a0bb-fe381eb700fe"
-    }
+  "abort_reason": [
+    "[FAIL] last_run: Last run was 1.5h ago (minimum 20h required to prevent double-runs)"
   ]
 }
