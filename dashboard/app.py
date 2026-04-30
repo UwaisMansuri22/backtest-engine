@@ -76,7 +76,7 @@ def live_logs() -> list[dict]:
     return out
 
 
-@st.cache_data
+@st.cache_data(ttl=300)
 def backtest_files() -> list[Path]:
     d = _ROOT / "results"
     if not d.exists():
