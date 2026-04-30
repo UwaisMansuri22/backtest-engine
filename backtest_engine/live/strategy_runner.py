@@ -175,9 +175,14 @@ def run_daily_strategy(dry_run: bool = False) -> dict[str, Any]:
                 str(p.symbol): float(p.market_value) / equity
                 for p in positions
             }
+            current_qty: dict[str, float] = {
+                str(p.symbol): float(p.qty)
+                for p in positions
+            }
         else:
             equity = _DUMMY_EQUITY
             current_weights = {}
+            current_qty = {}
 
         log["account_equity"] = round(equity, 2)
         log["current_weights"] = {k: round(v, 4) for k, v in current_weights.items()}
@@ -198,6 +203,11 @@ def run_daily_strategy(dry_run: bool = False) -> dict[str, Any]:
 
             price_val = float(prices_14[symbol].iloc[-1])
             qty = notional / price_val
+
+            # Cap sell qty at the actual held quantity to avoid "insufficient qty"
+            # errors caused by floating-point drift between computed and held shares.
+            if delta < 0:
+                qty = min(qty, current_qty.get(symbol, qty))
 
             orders.append(
                 {
