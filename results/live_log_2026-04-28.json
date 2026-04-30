@@ -1,0 +1,72 @@
+{
+  "timestamp": "2026-04-28T01:44:42.165942+00:00",
+  "dry_run": true,
+  "status": "aborted",
+  "price_rows": 420,
+  "price_cols": [
+    "XLK",
+    "XLF",
+    "XLV",
+    "XLE",
+    "XLY",
+    "XLP",
+    "XLI",
+    "XLB",
+    "XLU",
+    "XLRE",
+    "XLC",
+    "TLT",
+    "GLD",
+    "IEF"
+  ],
+  "regime_risk_on": true,
+  "active_assets": [
+    "XLK",
+    "XLI",
+    "GLD"
+  ],
+  "target_weights": {
+    "XLK": 0.3346,
+    "XLI": 0.4448,
+    "GLD": 0.2205
+  },
+  "account_equity": 100000.0,
+  "current_weights": {},
+  "orders": [
+    {
+      "symbol": "XLK",
+      "side": "buy",
+      "qty": 208.36966,
+      "notional": 33460.0,
+      "delta_weight": 0.3346,
+      "price": 160.58
+    },
+    {
+      "symbol": "XLI",
+      "side": "buy",
+      "qty": 257.884972,
+      "notional": 44480.0,
+      "delta_weight": 0.4448,
+      "price": 172.48
+    },
+    {
+      "symbol": "GLD",
+      "side": "buy",
+      "qty": 51.295771,
+      "notional": 22050.0,
+      "delta_weight": 0.2205,
+      "price": 429.86
+    }
+  ],
+  "safety_checks": {
+    "paper_account": "PASS",
+    "order_notional": "PASS",
+    "concentration": "PASS",
+    "market_open": "FAIL: Market is closed \u2014 submit orders only during trading hours",
+    "last_run": "FAIL: Last run was 0.3h ago (minimum 20h required to prevent double-runs)"
+  },
+  "abort_reason": [
+    "[FAIL] market_open: Market is closed \u2014 submit orders only during trading hours",
+    "[FAIL] last_run: Last run was 0.3h ago (minimum 20h required to prevent double-runs)"
+  ]
+}
