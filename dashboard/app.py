@@ -124,7 +124,10 @@ def _eq_df(logs: list[dict]) -> pd.DataFrame | None:
     return df
 
 
-def _sharpe(r: pd.Series) -> str:
+def _sharpe(r: pd.Series, min_days: int = 30) -> str:
+    r = r.dropna()
+    if len(r) < min_days:
+        return f"— (min {min_days} days)"
     return f"{r.mean() / r.std() * 252**0.5:.2f}" if r.std() > 0 else "—"
 
 
@@ -235,26 +238,44 @@ elif page == "📈 Performance":
         use_container_width=True,
     )
 
+    n_days = len(eq_df)
     c1, c2 = st.columns(2)
+
+    # BUG 1 — Drawdown: recompute from decimal returns so values are in [-1, 0].
+    # eq_df["drawdown"] used equity prices directly which produced micro-values.
     with c1:
-        st.plotly_chart(
-            px.area(
-                eq_df, y="drawdown", title="Drawdown",
+        if n_days < 5:
+            st.info("Insufficient data for drawdown chart — check back after 5+ trading days")
+        else:
+            cum = (1 + eq_df["ret"].fillna(0)).cumprod()
+            dd = (cum / cum.cummax()) - 1
+            fig_dd = px.area(
+                dd.rename("drawdown"), title="Drawdown",
                 color_discrete_sequence=["#e74c3c"], labels={"drawdown": ""},
-            ),
-            use_container_width=True,
-        )
+            )
+            fig_dd.update_yaxes(tickformat=".1%")
+            st.plotly_chart(fig_dd, use_container_width=True)
+
+    # BUG 2 — Rolling Sharpe: guard against <30 days
     with c2:
-        rs = eq_df["ret"].rolling(30).mean() / eq_df["ret"].rolling(30).std() * 252**0.5
-        fig_sh = px.line(rs.rename("Sharpe"), title="Rolling 30-day Sharpe")
-        fig_sh.add_hline(y=0, line_dash="dash", line_color="gray")
-        st.plotly_chart(fig_sh, use_container_width=True)
+        if n_days < 30:
+            st.info(
+                f"Rolling Sharpe requires 30 days of data — "
+                f"{30 - n_days} days remaining"
+            )
+        else:
+            rs = eq_df["ret"].rolling(30).mean() / eq_df["ret"].rolling(30).std() * 252**0.5
+            fig_sh = px.line(rs.rename("Sharpe"), title="Rolling 30-day Sharpe")
+            fig_sh.add_hline(y=0, line_dash="dash", line_color="gray")
+            st.plotly_chart(fig_sh, use_container_width=True)
 
     monthly = eq_df["ret"].resample("ME").apply(lambda r: (1 + r).prod() - 1) * 100
+    # BUG 3 — Heatmap year axis: use int year (not float from pandas DatetimeIndex)
     heat = pd.DataFrame(
-        {"y": monthly.index.year, "m": monthly.index.month, "v": monthly.values}
+        {"y": monthly.index.year.astype(int), "m": monthly.index.month, "v": monthly.values}
     )
     pivot = heat.pivot(index="y", columns="m", values="v")
+    pivot.index = pivot.index.astype(str)   # str prevents Plotly treating years as continuous
     pivot.index.name, pivot.columns.name = "Year", ""
     mnames = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
     pivot.columns = [mnames[m - 1] for m in pivot.columns]
@@ -292,6 +313,10 @@ elif page == "📈 Performance":
         }),
         hide_index=True,
         use_container_width=True,
+    )
+    st.caption(
+        f"*Note: metrics based on {n_days} trading days of live data. "
+        "Sharpe and drawdown become meaningful after 30+ days.*"
     )
 
 # ══════════════════════════════════════════════════════════════════════════════
