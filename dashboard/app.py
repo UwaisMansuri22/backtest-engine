@@ -201,6 +201,7 @@ if page == "📊 Live Account":
                 df_pos, values="Market Value", names="Symbol",
                 title="Allocation", hole=0.4,
             )
+            fig.update_traces(texttemplate="%{label} — %{percent:.1%}", textposition="outside")
             fig.update_layout(margin=dict(t=40, b=0, l=0, r=0), showlegend=False)
             st.plotly_chart(fig, use_container_width=True)
         with right:
