@@ -270,13 +270,23 @@ def run_daily_strategy(dry_run: bool = False) -> dict[str, Any]:
                     order["symbol"], order["qty"], order["side"]
                 )
                 order_id = str(result.id)
-                submitted.append({"symbol": order["symbol"], "order_id": order_id})
+                filled_at = (
+                    result.filled_at.isoformat()
+                    if result.filled_at is not None
+                    else datetime.now(tz=UTC).isoformat()
+                )
+                submitted.append({
+                    "symbol": order["symbol"],
+                    "order_id": order_id,
+                    "filled_at": filled_at,
+                })
                 logger.info(
-                    "Submitted %s %s %.4f shares  → order_id=%s",
+                    "Submitted %s %s %.4f shares  → order_id=%s  filled_at=%s",
                     order["side"],
                     order["symbol"],
                     order["qty"],
                     order_id,
+                    filled_at,
                 )
             log["submitted_orders"] = submitted
             log["status"] = "executed"
