@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-07T14:14:28.747552+00:00",
+  "timestamp": "2026-05-07T15:55:18.970360+00:00",
   "dry_run": false,
-  "status": "executed",
+  "status": "aborted",
   "price_rows": 420,
   "price_cols": [
     "XLK",
@@ -26,40 +26,40 @@
     "GLD"
   ],
   "target_weights": {
-    "XLK": 0.3574,
-    "XLE": 0.3615,
-    "GLD": 0.2811
+    "XLK": 0.3564,
+    "XLE": 0.3627,
+    "GLD": 0.2809
   },
-  "account_equity": 102141.96,
+  "account_equity": 102160.45,
   "current_weights": {
-    "GLD": 0.2779,
-    "XLE": 0.361,
-    "XLK": 0.3612
+    "GLD": 0.2798,
+    "XLE": 0.3631,
+    "XLK": 0.3571
   },
   "orders": [
     {
       "symbol": "XLK",
       "side": "sell",
-      "qty": 2.28727,
-      "notional": 391.24,
-      "delta_weight": -0.0038,
-      "price": 171.05
+      "qty": 0.414339,
+      "notional": 70.9,
+      "delta_weight": -0.0007,
+      "price": 171.12
     },
     {
       "symbol": "XLE",
-      "side": "buy",
-      "qty": 0.91935,
-      "notional": 50.93,
-      "delta_weight": 0.0005,
-      "price": 55.4
+      "side": "sell",
+      "qty": 0.733883,
+      "notional": 40.79,
+      "delta_weight": -0.0004,
+      "price": 55.58
     },
     {
       "symbol": "GLD",
       "side": "buy",
-      "qty": 0.756848,
-      "notional": 330.16,
-      "delta_weight": 0.0032,
-      "price": 436.225
+      "qty": 0.257387,
+      "notional": 111.81,
+      "delta_weight": 0.0011,
+      "price": 434.4
     }
   ],
   "safety_checks": {
@@ -67,23 +67,9 @@
     "order_notional": "PASS",
     "concentration": "PASS",
     "market_open": "PASS",
-    "last_run": "PASS"
+    "last_run": "FAIL: Last run was 1.7h ago (minimum 20h required to prevent double-runs)"
   },
-  "submitted_orders": [
-    {
-      "symbol": "XLK",
-      "order_id": "55874d29-6ffd-47d1-988c-9d618ee36d9e",
-      "filled_at": "2026-05-07T14:14:29.776314+00:00"
-    },
-    {
-      "symbol": "XLE",
-      "order_id": "ec4f77d9-8750-45b0-adff-20cfa6c38c22",
-      "filled_at": "2026-05-07T14:14:29.814043+00:00"
-    },
-    {
-      "symbol": "GLD",
-      "order_id": "9b112c26-8bf4-4f1d-90cc-0d6f1cfb24b2",
-      "filled_at": "2026-05-07T14:14:29.849933+00:00"
-    }
+  "abort_reason": [
+    "[FAIL] last_run: Last run was 1.7h ago (minimum 20h required to prevent double-runs)"
   ]
 }
