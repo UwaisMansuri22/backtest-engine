@@ -1,0 +1,89 @@
+{
+  "timestamp": "2026-05-08T15:10:15.970180+00:00",
+  "dry_run": false,
+  "status": "executed",
+  "price_rows": 420,
+  "price_cols": [
+    "XLK",
+    "XLF",
+    "XLV",
+    "XLE",
+    "XLY",
+    "XLP",
+    "XLI",
+    "XLB",
+    "XLU",
+    "XLRE",
+    "XLC",
+    "TLT",
+    "GLD",
+    "IEF"
+  ],
+  "regime_risk_on": true,
+  "active_assets": [
+    "XLK",
+    "XLE",
+    "GLD"
+  ],
+  "target_weights": {
+    "XLK": 0.3474,
+    "XLE": 0.3728,
+    "GLD": 0.2797
+  },
+  "account_equity": 102943.17,
+  "current_weights": {
+    "GLD": 0.2769,
+    "XLE": 0.3626,
+    "XLK": 0.3605
+  },
+  "orders": [
+    {
+      "symbol": "XLK",
+      "side": "sell",
+      "qty": 7.733995,
+      "notional": 1344.63,
+      "delta_weight": -0.0131,
+      "price": 173.86
+    },
+    {
+      "symbol": "XLE",
+      "side": "buy",
+      "qty": 18.688708,
+      "notional": 1046.01,
+      "delta_weight": 0.0102,
+      "price": 55.97
+    },
+    {
+      "symbol": "GLD",
+      "side": "buy",
+      "qty": 0.665722,
+      "notional": 288.44,
+      "delta_weight": 0.0028,
+      "price": 433.27
+    }
+  ],
+  "safety_checks": {
+    "paper_account": "PASS",
+    "order_notional": "PASS",
+    "concentration": "PASS",
+    "market_open": "PASS",
+    "last_run": "PASS"
+  },
+  "submitted_orders": [
+    {
+      "symbol": "XLK",
+      "order_id": "11f770e7-3ce5-4d61-bf3b-b3ea556e3403",
+      "filled_at": "2026-05-08T15:10:16.825523+00:00"
+    },
+    {
+      "symbol": "XLE",
+      "order_id": "fe42b89c-23bf-4b2b-a59f-a767b5c5241f",
+      "filled_at": "2026-05-08T15:10:16.851341+00:00"
+    },
+    {
+      "symbol": "GLD",
+      "order_id": "7553ca5c-036b-426e-a283-d7f9cea8c075",
+      "filled_at": "2026-05-08T15:10:16.877936+00:00"
+    }
+  ]
+}
