@@ -279,12 +279,11 @@ elif page == "📈 Performance":
             st.plotly_chart(fig_sh, use_container_width=True)
 
     monthly = eq_df["ret"].resample("ME").apply(lambda r: (1 + r).prod() - 1) * 100
-    # BUG 3 — Heatmap year axis: use int year (not float from pandas DatetimeIndex)
     heat = pd.DataFrame(
         {"y": monthly.index.year.astype(int), "m": monthly.index.month, "v": monthly.values}
     )
     pivot = heat.pivot(index="y", columns="m", values="v")
-    pivot.index = pivot.index.astype(str)   # str prevents Plotly treating years as continuous
+    pivot.index = pivot.index.astype(int)
     pivot.index.name, pivot.columns.name = "Year", ""
     mnames = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
     pivot.columns = [mnames[m - 1] for m in pivot.columns]
@@ -301,8 +300,9 @@ elif page == "📈 Performance":
     spy_cum = (1 + spy_ret).cumprod() - 1
     st.plotly_chart(
         px.line(
-            pd.DataFrame({"Strategy": eq_df["cum_ret"], "SPY": spy_cum}),
+            pd.DataFrame({"Strategy": eq_df["cum_ret"] * 100, "SPY": spy_cum * 100}),
             title="Cumulative Return vs SPY",
+            labels={"value": "Return (%)"},
         ),
         use_container_width=True,
     )

@@ -31,6 +31,38 @@ logger = logging.getLogger(__name__)
 
 _LOG_DIR = Path("results")
 _DUMMY_EQUITY = 100_000.0   # used in dry-run when no Alpaca keys are found
+_DRIFT_THRESHOLD = 0.05     # 5 % weight drift triggers an intra-month rebalance
+
+
+# ── Rebalance gate ─────────────────────────────────────────────────────────
+
+def is_rebalance_day() -> bool:
+    """True if today is the last trading day of the calendar month.
+
+    Determined by checking whether the next business day falls in a
+    different month — no calendar look-up required.
+    """
+    today = pd.Timestamp.today().normalize()
+    next_bday = today + pd.offsets.BDay(1)
+    return bool(next_bday.month != today.month)
+
+
+def position_drift_exceeds_threshold(
+    current_weights: dict[str, float],
+    target_weights: dict[str, float],
+    threshold: float = _DRIFT_THRESHOLD,
+) -> bool:
+    """True if any position has drifted more than *threshold* from its target.
+
+    Checks every symbol that appears in either dict so that new targets
+    (current = 0) and liquidation targets (target = 0) are both caught.
+    """
+    for symbol in set(current_weights) | set(target_weights):
+        current = current_weights.get(symbol, 0.0)
+        target = target_weights.get(symbol, 0.0)
+        if abs(current - target) > threshold:
+            return True
+    return False
 
 
 # ── Internal helpers ───────────────────────────────────────────────────────
@@ -232,6 +264,33 @@ def run_daily_strategy(dry_run: bool = False) -> dict[str, Any]:
                 )
         else:
             logger.info("No orders needed — portfolio already at target")
+
+        # ── 7b. Rebalance gate ──────────────────────────────────────────────
+        # Submit orders only on month-end OR when a position drifts >5%.
+        # On other days we compute and log the intended trades but clear the
+        # order list so nothing is submitted.
+        rebalance_day = is_rebalance_day()
+        drift = position_drift_exceeds_threshold(current_weights, target_weights)
+
+        if rebalance_day:
+            rebalance_reason = "monthly"
+        elif drift:
+            rebalance_reason = "drift"
+        else:
+            rebalance_reason = "none"
+
+        should_rebalance = rebalance_day or drift
+        log["rebalance_triggered"] = should_rebalance
+        log["rebalance_reason"] = rebalance_reason
+
+        if not should_rebalance:
+            logger.info(
+                "Rebalance gate: SKIP — not month-end and no position drift >%d%%",
+                int(_DRIFT_THRESHOLD * 100),
+            )
+            orders = []
+        else:
+            logger.info("Rebalance gate: EXECUTE (%s)", rebalance_reason)
 
         # ── 8. Safety checks ────────────────────────────────────────────────
         from backtest_engine.live.safety_checks import all_passed, run_all_checks
