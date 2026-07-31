@@ -1,0 +1,104 @@
+{
+  "timestamp": "2026-07-31T15:48:35.659023+00:00",
+  "dry_run": false,
+  "status": "executed",
+  "price_rows": 420,
+  "price_cols": [
+    "XLK",
+    "XLF",
+    "XLV",
+    "XLE",
+    "XLY",
+    "XLP",
+    "XLI",
+    "XLB",
+    "XLU",
+    "XLRE",
+    "XLC",
+    "TLT",
+    "GLD",
+    "IEF"
+  ],
+  "regime_risk_on": true,
+  "active_assets": [
+    "XLK",
+    "XLV",
+    "XLE"
+  ],
+  "target_weights": {
+    "XLK": 0.228,
+    "XLV": 0.4388,
+    "XLE": 0.3332
+  },
+  "account_equity": 100899.74,
+  "current_weights": {
+    "GLD": 0.3679,
+    "XLE": 0.3795,
+    "XLK": 0.2527
+  },
+  "orders": [
+    {
+      "symbol": "XLK",
+      "side": "sell",
+      "qty": 14.33693,
+      "notional": 2490.32,
+      "delta_weight": -0.0247,
+      "price": 173.7
+    },
+    {
+      "symbol": "XLV",
+      "side": "buy",
+      "qty": 272.24255,
+      "notional": 44274.81,
+      "delta_weight": 0.4388,
+      "price": 162.63
+    },
+    {
+      "symbol": "XLE",
+      "side": "sell",
+      "qty": 79.340102,
+      "notional": 4668.37,
+      "delta_weight": -0.0463,
+      "price": 58.84
+    },
+    {
+      "symbol": "GLD",
+      "side": "sell",
+      "qty": 100.128241,
+      "notional": 37116.54,
+      "delta_weight": -0.3679,
+      "price": 370.67
+    }
+  ],
+  "rebalance_triggered": true,
+  "rebalance_reason": "monthly",
+  "safety_checks": {
+    "paper_account": "PASS",
+    "order_notional": "PASS",
+    "concentration": "PASS",
+    "market_open": "PASS",
+    "last_run": "PASS"
+  },
+  "submitted_orders": [
+    {
+      "symbol": "XLK",
+      "order_id": "94abb1ac-bc2f-4e95-a581-06d68917bb26",
+      "filled_at": "2026-07-31T15:48:37.145381+00:00"
+    },
+    {
+      "symbol": "XLV",
+      "order_id": "23551797-0351-40eb-8bef-4e372a1b81e0",
+      "filled_at": "2026-07-31T15:48:37.226580+00:00"
+    },
+    {
+      "symbol": "XLE",
+      "order_id": "835c22ec-851d-4e87-b643-7d4c30873c5f",
+      "filled_at": "2026-07-31T15:48:37.301484+00:00"
+    },
+    {
+      "symbol": "GLD",
+      "order_id": "8ac9dc7b-8112-4176-9d78-7b9b7018e691",
+      "filled_at": "2026-07-31T15:48:37.374508+00:00"
+    }
+  ]
+}
