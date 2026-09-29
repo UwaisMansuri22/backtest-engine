@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-09-29T18:52:40.945549+00:00",
+  "dry_run": false,
+  "status": "executed",
+  "price_rows": 420,
+  "price_cols": [
+    "XLK",
+    "XLF",
+    "XLV",
+    "XLE",
+    "XLY",
+    "XLP",
+    "XLI",
+    "XLB",
+    "XLU",
+    "XLRE",
+    "XLC",
+    "TLT",
+    "GLD",
+    "IEF"
+  ],
+  "regime_risk_on": true,
+  "active_assets": [
+    "XLK",
+    "XLV",
+    "XLE"
+  ],
+  "target_weights": {
+    "XLK": 0.267,
+    "XLV": 0.413,
+    "XLE": 0.32
+  },
+  "account_equity": 107159.49,
+  "current_weights": {
+    "XLE": 0.3357,
+    "XLK": 0.2384,
+    "XLV": 0.4258
+  },
+  "orders": [
+    {
+      "symbol": "XLK",
+      "side": "buy",
+      "qty": 15.731543,
+      "notional": 3062.77,
+      "delta_weight": 0.0286,
+      "price": 194.69
+    },
+    {
+      "symbol": "XLV",
+      "side": "sell",
+      "qty": 8.06954,
+      "notional": 1374.24,
+      "delta_weight": -0.0128,
+      "price": 170.3
+    },
+    {
+      "symbol": "XLE",
+      "side": "sell",
+      "qty": 27.370663,
+      "notional": 1677.82,
+      "delta_weight": -0.0157,
+      "price": 61.3
+    }
+  ],
+  "rebalance_triggered": false,
+  "rebalance_reason": "none",
+  "safety_checks": {
+    "paper_account": "PASS",
+    "order_notional": "PASS",
+    "concentration": "PASS",
+    "market_open": "PASS",
+    "last_run": "PASS"
+  },
+  "submitted_orders": []
+}
