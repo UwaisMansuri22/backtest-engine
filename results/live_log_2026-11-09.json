@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-11-09T23:09:44.205162+00:00",
+  "dry_run": false,
+  "status": "aborted",
+  "price_rows": 420,
+  "price_cols": [
+    "XLK",
+    "XLF",
+    "XLV",
+    "XLE",
+    "XLY",
+    "XLP",
+    "XLI",
+    "XLB",
+    "XLU",
+    "XLRE",
+    "XLC",
+    "TLT",
+    "GLD",
+    "IEF"
+  ],
+  "regime_risk_on": true,
+  "active_assets": [
+    "XLK",
+    "XLV",
+    "XLE"
+  ],
+  "target_weights": {
+    "XLK": 0.2614,
+    "XLV": 0.4076,
+    "XLE": 0.331
+  },
+  "account_equity": 108517.99,
+  "current_weights": {
+    "XLE": 0.3024,
+    "XLK": 0.2794,
+    "XLV": 0.4181
+  },
+  "orders": [
+    {
+      "symbol": "XLK",
+      "side": "sell",
+      "qty": 11.409006,
+      "notional": 1949.23,
+      "delta_weight": -0.018,
+      "price": 170.85
+    },
+    {
+      "symbol": "XLV",
+      "side": "sell",
+      "qty": 6.059128,
+      "notional": 1141.42,
+      "delta_weight": -0.0105,
+      "price": 188.38
+    },
+    {
+      "symbol": "XLE",
+      "side": "buy",
+      "qty": 50.12912,
+      "notional": 3106.0,
+      "delta_weight": 0.0286,
+      "price": 61.96
+    }
+  ],
+  "rebalance_triggered": false,
+  "rebalance_reason": "none",
+  "safety_checks": {
+    "paper_account": "PASS",
+    "order_notional": "PASS",
+    "concentration": "PASS",
+    "market_open": "FAIL: Market is closed \u2014 submit orders only during trading hours",
+    "last_run": "PASS"
+  },
+  "abort_reason": [
+    "[FAIL] market_open: Market is closed \u2014 submit orders only during trading hours"
+  ]
+}
