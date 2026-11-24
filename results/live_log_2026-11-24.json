@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-24T01:13:37.050102+00:00",
+  "timestamp": "2026-11-24T23:16:37.991886+00:00",
   "dry_run": false,
   "status": "aborted",
   "price_rows": 420,
@@ -22,36 +22,36 @@
   "regime_risk_on": false,
   "active_assets": [],
   "target_weights": {},
-  "account_equity": 103800.59,
+  "account_equity": 104292.12,
   "current_weights": {
-    "XLE": 0.3058,
-    "XLK": 0.278,
-    "XLV": 0.4161
+    "XLE": 0.3072,
+    "XLK": 0.2668,
+    "XLV": 0.4259
   },
   "orders": [
     {
       "symbol": "XLK",
       "side": "sell",
       "qty": 176.851192,
-      "notional": 28855.04,
-      "delta_weight": -0.278,
-      "price": 162.42
+      "notional": 27827.54,
+      "delta_weight": -0.2668,
+      "price": 157.08
     },
     {
       "symbol": "XLV",
       "side": "sell",
-      "qty": 240.600155,
-      "notional": 43187.73,
-      "delta_weight": -0.4161,
-      "price": 179.5
+      "qty": 240.375226,
+      "notional": 44412.93,
+      "delta_weight": -0.4259,
+      "price": 184.765
     },
     {
       "symbol": "XLE",
       "side": "sell",
-      "qty": 530.189924,
-      "notional": 31742.47,
-      "delta_weight": -0.3058,
-      "price": 59.84
+      "qty": 530.095177,
+      "notional": 32036.3,
+      "delta_weight": -0.3072,
+      "price": 60.435
     }
   ],
   "rebalance_triggered": true,
