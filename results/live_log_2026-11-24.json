@@ -1,0 +1,69 @@
+{
+  "timestamp": "2026-11-24T01:13:37.050102+00:00",
+  "dry_run": false,
+  "status": "aborted",
+  "price_rows": 420,
+  "price_cols": [
+    "XLK",
+    "XLF",
+    "XLV",
+    "XLE",
+    "XLY",
+    "XLP",
+    "XLI",
+    "XLB",
+    "XLU",
+    "XLRE",
+    "XLC",
+    "TLT",
+    "GLD",
+    "IEF"
+  ],
+  "regime_risk_on": false,
+  "active_assets": [],
+  "target_weights": {},
+  "account_equity": 103800.59,
+  "current_weights": {
+    "XLE": 0.3058,
+    "XLK": 0.278,
+    "XLV": 0.4161
+  },
+  "orders": [
+    {
+      "symbol": "XLK",
+      "side": "sell",
+      "qty": 176.851192,
+      "notional": 28855.04,
+      "delta_weight": -0.278,
+      "price": 162.42
+    },
+    {
+      "symbol": "XLV",
+      "side": "sell",
+      "qty": 240.600155,
+      "notional": 43187.73,
+      "delta_weight": -0.4161,
+      "price": 179.5
+    },
+    {
+      "symbol": "XLE",
+      "side": "sell",
+      "qty": 530.189924,
+      "notional": 31742.47,
+      "delta_weight": -0.3058,
+      "price": 59.84
+    }
+  ],
+  "rebalance_triggered": true,
+  "rebalance_reason": "drift",
+  "safety_checks": {
+    "paper_account": "PASS",
+    "order_notional": "PASS",
+    "concentration": "PASS",
+    "market_open": "FAIL: Market is closed \u2014 submit orders only during trading hours",
+    "last_run": "PASS"
+  },
+  "abort_reason": [
+    "[FAIL] market_open: Market is closed \u2014 submit orders only during trading hours"
+  ]
+}
